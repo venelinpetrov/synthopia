@@ -2,10 +2,8 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
-
-
   const [initialized, setInitialized] = useState(false);
-  const [{ctx, gain, osc}, setState] = useState<{
+  const [{ ctx, gain }, setState] = useState<{
     ctx: AudioContext | null;
     gain: GainNode | null;
     osc: OscillatorNode | null;
@@ -20,11 +18,13 @@ function App() {
   };
 
   const handleStart = () => {
-    gain!.gain.value = .5;
+    gain!.gain.setValueAtTime(0, 0);
+    gain!.gain.linearRampToValueAtTime(.5, ctx!.currentTime + .02);
   };
 
   const handleStop = () => {
-    gain!.gain.value = 0;
+    gain!.gain.setValueAtTime(0.5, ctx!.currentTime + .02);
+    gain!.gain.linearRampToValueAtTime(0, ctx!.currentTime + .03);
   };
 
   useEffect(() => {
