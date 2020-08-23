@@ -1,9 +1,8 @@
-//draw function for canvas
 export const drawWave = (analyser: AnalyserNode, ctx: CanvasRenderingContext2D) => {
   const buffer = new Float32Array(1024);
   const width = ctx.canvas.width;
 
-  ctx.strokeStyle = "#1d1";
+  ctx.strokeStyle = '#1d1';
   ctx.setTransform(1, 0, 0, -1, 0, 75); // flip y-axis and translate to center
   ctx.lineWidth = 2;
 
@@ -23,4 +22,10 @@ export const drawWave = (analyser: AnalyserNode, ctx: CanvasRenderingContext2D) 
 
     requestAnimationFrame(loop);
   })();
+};
+
+export const initOscilloscope = (analyserNode: AnalyserNode, canvasId: string) => {
+  const oscilloscope = document.getElementById(canvasId);
+  const canvasContext = (oscilloscope as HTMLCanvasElement).getContext('2d');
+  (canvasContext && drawWave(analyserNode, canvasContext));
 }

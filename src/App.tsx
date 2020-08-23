@@ -3,36 +3,34 @@ import './App.css';
 
 import { withAudioContext } from './components';
 import { wave1 } from './custom_waves';
-import { drawWave } from './utils'
+import { initOscilloscope } from './utils';
 
 
 function App({ ctx }: { ctx: AudioContext}) {
-  const gain = ctx.createGain();
-  const osc = ctx.createOscillator();
-  var analyser = ctx.createAnalyser();
+  const gainNode = ctx.createGain();
+  const oscNode = ctx.createOscillator();
+  var analyserNode = ctx.createAnalyser();
 
-  gain.gain.value = 0;
-  osc.frequency.value = 240;
+  gainNode.gain.value = 0;
+  oscNode.frequency.value = 240;
 
   //routing
-  osc.connect(gain);
-  gain.connect(analyser);
-  analyser.connect(ctx.destination);
+  oscNode.connect(gainNode);
+  gainNode.connect(analyserNode);
+  analyserNode.connect(ctx.destination);
 
-  osc.setPeriodicWave(wave1(ctx));
-  osc.start(0);
+  oscNode.setPeriodicWave(wave1(ctx));
+  oscNode.start(0);
 
   const handleStart = () => {
-    gain!.gain.setValueAtTime(0, 0);
-    gain!.gain.linearRampToValueAtTime(.5, ctx.currentTime + .02);
-    var c = document.getElementById('scope'),
-      canvasContext = (c as HTMLCanvasElement).getContext("2d");
-    drawWave(analyser, canvasContext!);
+    gainNode.gain.setValueAtTime(0, 0);
+    gainNode.gain.linearRampToValueAtTime(.5, ctx.currentTime + .02);
+    initOscilloscope(analyserNode, 'scope');
   };
 
   const handleStop = () => {
-    gain!.gain.setValueAtTime(0.5, ctx.currentTime + .02);
-    gain!.gain.linearRampToValueAtTime(0, ctx.currentTime + .03);
+    gainNode.gain.setValueAtTime(0.5, ctx.currentTime + .02);
+    gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + .03);
   };
 
   return (

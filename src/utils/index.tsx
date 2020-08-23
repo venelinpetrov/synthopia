@@ -1,1 +1,1 @@
-export * from './drawWave';
+export * from './oscilloscope';
