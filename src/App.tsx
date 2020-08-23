@@ -2,15 +2,18 @@ import React from 'react';
 import './App.css';
 
 import { withAudioContext } from './components';
+import { wave1 } from './custom_waves';
 
 function App({ ctx }: { ctx: AudioContext}) {
   const gain = ctx.createGain();
   const osc = ctx.createOscillator();
 
   gain.gain.value = 0;
-  osc.frequency.value = 440;
+  osc.frequency.value = 240;
   osc.connect(gain);
   gain.connect(ctx.destination);
+
+  osc.setPeriodicWave(wave1(ctx));
   osc.start(0);
 
   const handleStart = () => {

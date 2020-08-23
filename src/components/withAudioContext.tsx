@@ -7,7 +7,6 @@ export const withAudioContext = (Component: React.FC<{ctx: AudioContext}>) => {
     const [ctx, setCtx] = useState<AudioContext | null>(null);
 
     const initialize = () => setInitialized(true);
-
     useEffect(() => {
       if (!initialized) {
         const ctx = new AudioContext();
