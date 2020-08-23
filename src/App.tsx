@@ -25,7 +25,7 @@ function App({ ctx }: { ctx: AudioContext}) {
   const handleStart = () => {
     gainNode.gain.setValueAtTime(0, 0);
     gainNode.gain.linearRampToValueAtTime(.5, ctx.currentTime + .02);
-    initOscilloscope(analyserNode, 'scope');
+    initOscilloscope(analyserNode, 'Scope');
   };
 
   const handleStop = () => {
@@ -35,11 +35,11 @@ function App({ ctx }: { ctx: AudioContext}) {
 
   return (
     <div className="App">
-      <div>
+      <div className="ControlPanel">
         <button onClick={handleStart}>Start</button>
         <button onClick={handleStop}>Stop</button>
       </div>
-      <canvas id='scope'></canvas>
+      <canvas id='Scope'></canvas>
     </div>
   );
 }

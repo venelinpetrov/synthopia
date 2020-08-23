@@ -2,8 +2,16 @@
   color: black;
 }
 
-#scope {
+#Scope {
   background: #0e230e;
-  width: 400px;
-  height: 200px;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  opacity: .4;
+}
+
+.ControlPanel {
+  position: relative;
+  z-index: 1000;
 }
