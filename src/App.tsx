@@ -11,13 +11,12 @@ function App({ ctx }: { ctx: AudioContext}) {
   const osc = ctx.createOscillator();
   var analyser = ctx.createAnalyser();
 
-  //routing
-
   gain.gain.value = 0;
   osc.frequency.value = 240;
+
+  //routing
   osc.connect(gain);
   gain.connect(analyser);
-
   analyser.connect(ctx.destination);
 
   osc.setPeriodicWave(wave1(ctx));
