@@ -29,6 +29,7 @@ function App({ ctx }: { ctx: AudioContext}) {
   };
 
   const handleStop = () => {
+    gainNode.gain.cancelScheduledValues(0);
     gainNode.gain.setValueAtTime(0.5, ctx.currentTime + .02);
     gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + .03);
   };
