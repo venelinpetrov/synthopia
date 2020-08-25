@@ -1,24 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './App.css';
 
-import { withAudioContext, useMidi } from './components';
+import { withAudioContext, useMidi, IMidi } from './components';
 import { wave1 } from './custom_waves';
-import { initOscilloscope} from './utils';
+import { noteToFreq} from './utils';
 
 
 function App({ ctx }: { ctx: AudioContext}) {
-  useMidi({
-    ctx,
-    onNoteOn: e => console.log('note on', e),
-    onNoteOff: e => console.log('note off', e),
-  });
+
   const gainNode = ctx.createGain();
   const oscNode = ctx.createOscillator();
-  var analyserNode = ctx.createAnalyser();
+  const analyserNode = ctx.createAnalyser();
 
   gainNode.gain.value = 0;
   oscNode.frequency.value = 240;
-
   //routing
   oscNode.connect(gainNode);
   gainNode.connect(analyserNode);
@@ -27,25 +22,27 @@ function App({ ctx }: { ctx: AudioContext}) {
   oscNode.setPeriodicWave(wave1(ctx));
   oscNode.start(0);
 
-  const handleStart = () => {
+  const handleNoteOn = useCallback<IMidi['onNoteOn']>(e => {
     gainNode.gain.setValueAtTime(0, 0);
     gainNode.gain.linearRampToValueAtTime(.5, ctx.currentTime + .02);
-    initOscilloscope(analyserNode, 'Scope');
-  };
+    oscNode.frequency.value = noteToFreq(e.data[1]);
+  }, [gainNode, ctx.currentTime, oscNode.frequency.value]);
 
-  const handleStop = () => {
+  const handleNoteOff = () => {
     gainNode.gain.cancelScheduledValues(0);
     gainNode.gain.setValueAtTime(0.5, ctx.currentTime + .02);
     gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + .03);
   };
-
+  useMidi({
+    onNoteOn: e => handleNoteOn(e),
+    onNoteOff: handleNoteOff,
+  });
   return (
     <div className="App">
       <div className="ControlPanel">
-        <button onClick={handleStart}>Start</button>
-        <button onClick={handleStop}>Stop</button>
+        synth ui
       </div>
-      <canvas id='Scope'></canvas>
+      {/* <canvas id='Scope'></canvas> */}
     </div>
   );
 }

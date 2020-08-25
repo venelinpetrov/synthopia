@@ -27,5 +27,5 @@ export const drawWave = (analyser: AnalyserNode, ctx: CanvasRenderingContext2D) 
 export const initOscilloscope = (analyserNode: AnalyserNode, canvasId: string) => {
   const oscilloscope = document.getElementById(canvasId);
   const canvasContext = (oscilloscope as HTMLCanvasElement).getContext('2d');
-  (canvasContext && drawWave(analyserNode, canvasContext));
+  return () => (canvasContext && drawWave(analyserNode, canvasContext));
 }
