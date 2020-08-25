@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-export const withAudioContext = (Component: React.FC<{ctx: AudioContext}>) => {
+export interface WithAudioContextProps {
+  ctx: AudioContext;
+};
+
+export const withAudioContext =
+  <T extends {}>(Component: React.ComponentType<T & WithAudioContextProps>, ...rest: any) => {
 
   return () => {
     const [initialized, setInitialized] = useState(false);
@@ -15,6 +20,6 @@ export const withAudioContext = (Component: React.FC<{ctx: AudioContext}>) => {
 
     }, [initialized]);
 
-    return initialized ? <Component ctx={ctx!} /> : <button onClick={initialize}>Init</button>;
+    return initialized ? <Component ctx={ctx!} {...rest} /> : <button onClick={initialize}>Init</button>;
   }
 };

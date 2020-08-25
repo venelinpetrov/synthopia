@@ -1,12 +1,17 @@
 import React from 'react';
 import './App.css';
 
-import { withAudioContext } from './components';
+import { withAudioContext, useMidi } from './components';
 import { wave1 } from './custom_waves';
-import { initOscilloscope } from './utils';
+import { initOscilloscope} from './utils';
 
 
 function App({ ctx }: { ctx: AudioContext}) {
+  useMidi({
+    ctx,
+    onNoteOn: e => console.log('note on', e),
+    onNoteOff: e => console.log('note off', e),
+  });
   const gainNode = ctx.createGain();
   const oscNode = ctx.createOscillator();
   var analyserNode = ctx.createAnalyser();
