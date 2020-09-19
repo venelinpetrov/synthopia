@@ -34,7 +34,7 @@ function App({ ctx }: { ctx: AudioContext}) {
     gainNode.gain.linearRampToValueAtTime(0, ctx.currentTime + .03);
   };
   useMidi({
-    onNoteOn: e => handleNoteOn(e),
+    onNoteOn: handleNoteOn,
     onNoteOff: handleNoteOff,
   });
   return (
